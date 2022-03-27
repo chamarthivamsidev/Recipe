@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Receipe of the day</title>
+    <link rel="stylesheet" href="./css/navbar.css" />
+    <link rel="stylesheet" href="./css/day.css" />
+    <link
+      rel="stylesheet"
+      href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+      integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p"
+      crossorigin="anonymous"
+    />
+    <!-- favicon link -->
+    <link rel="icon" href="./images/favicon.ico" type="image/x-icon" />
+  </head>
+  <body>
+    <div id="container"></div>
+    <div class="display_results">
+      <!-- <div id="debouncing_results"></div> -->
+      <div id="search_btn_results"></div>
+    </div>
+    <div class="dec_div">
+      <div id="close">X</div>
+      <div id="dec_div_content_display">
+        <div id="dec_div_content_display_left">
+          <p id="dec_ingradients"></p>
+        </div>
+        <div id="dec_div_content_display_right">
+          <img id="dec_img" />
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
+<script type="module">
+  import navbar from "./components/navbar.js";
+  import { getData, appendData } from "./scripts/showdata.js";
+
+  var dec_div = document.querySelector(".dec_div");
+  var close = document.getElementById("close");
+  var main = document.getElementById("main");
+  var display_results = document.querySelector("display_results");
+  var search_btn_results = document.getElementById("search_btn_results");
+  var main = document.getElementById("main");
+  var dec_img = document.getElementById("dec_img");
+  var dec_ingradients = document.getElementById("dec_ingradients");
+
+  let container = document.getElementById("container");
+  container.innerHTML = navbar();
+
+  let data = await getData(
+    `https://www.themealdb.com/api/json/v1/1/random.php`
+  );
+
+  let meals = data.meals;
+  appendData(
+    meals,
+    search_btn_results,
+    main,
+    dec_div,
+    dec_img,
+    dec_ingradients
+  );
+  close.addEventListener("click", function () {
+    dec_div.classList.toggle("dec_div_content");
+    main.style.opacity = "1";
+    search_btn_results.style.opacity = "1";
+  });
+</script>

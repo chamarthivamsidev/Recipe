@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home</title>
+    <link rel="stylesheet" href="./css/navbar.css" />
+    <link rel="stylesheet" href="./css/index.css" />
+    <link
+      rel="stylesheet"
+      href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+      integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p"
+      crossorigin="anonymous"
+    />
+    <!-- favicon link -->
+    <link rel="icon" href="./images/favicon.ico" type="image/x-icon" />
+
+    <style></style>
+  </head>
+  <body>
+    <div id="container"></div>
+    <div id="main">
+      <div id="search_receipe">
+        <input type="text" placeholder="Enter Receipe Name" />
+        <button id="search_btn">Search</button>
+      </div>
+      <div class="search_results">
+        <div id="results"></div>
+      </div>
+    </div>
+    <div class="display_results">
+      <div id="search_btn_results"></div>
+    </div>
+    <div class="dec_div">
+      <div id="close">X</div>
+      <div id="dec_div_content_display">
+        <div id="dec_div_content_display_left">
+          <p id="dec_ingradients"></p>
+        </div>
+        <div id="dec_div_content_display_right">
+          <img id="dec_img" />
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
+<script type="module">
+  let id;
+  import navbar from "./components/navbar.js";
+  import { getData, appendData } from "./scripts/showdata.js";
+  let container = document.getElementById("container");
+  container.innerHTML = navbar();
+
+  let input = document.querySelector("input");
+
+  let search_results = document.querySelector(".search_results");
+  let results = document.querySelector("#results");
+  var search_btn_results = document.getElementById("search_btn_results");
+  var dec_div = document.querySelector(".dec_div");
+  var close = document.getElementById("close");
+  var main = document.getElementById("main");
+  var display_results = document.querySelector("display_results");
+  var dec_img = document.getElementById("dec_img");
+  var dec_ingradients = document.getElementById("dec_ingradients");
+  input.oninput = debounce;
+  var flag = false;
+
+  // search button function
+
+  let search_btn = document.getElementById("search_btn");
+  search_btn.addEventListener("click", searchReceipe);
+
+  async function searchReceipe() {
+    search_results.classList.toggle("show");
+    flag = false;
+
+    let value = input.value;
+
+    let data = await getData(
+      `https://www.themealdb.com/api/json/v1/1/search.php?s=${value}`
+    );
+    let meals = data.meals;
+    localStorage.setItem("receipe_search_results", JSON.stringify(meals));
+
+    appendData(
+      meals,
+      search_btn_results,
+      main,
+      dec_div,
+      dec_img,
+      dec_ingradients
+    );
+  }
+
+  close.addEventListener("click", function () {
+    dec_div.classList.toggle("dec_div_content");
+    main.style.opacity = "1";
+    search_btn_results.style.opacity = "1";
+  });
+
+  // debouncing function
+
+  function debounce() {
+    clearTimeout(id);
+    id = setTimeout(() => {
+      showDetails();
+    }, 1000);
+  }
+
+  async function showDetails() {
+    let x = input.value;
+    if (flag === false) {
+      search_results.classList.toggle("show");
+      flag = true;
+    }
+    if (input.value === "") {
+      flag = false;
+      search_results.classList.toggle("show");
+    }
+
+    let data = await getData(
+      `https://www.themealdb.com/api/json/v1/1/search.php?s=${x}`
+    );
+    let meals = data.meals;
+
+    localStorage.setItem("receipe_search_results", JSON.stringify(meals));
+
+    // appendData(meals, results);
+
+    // appending data
+
+    results.innerHTML = null;
+    meals.map((el) => {
+      let title_div = document.createElement("div");
+      title_div.setAttribute("id", "title_div");
+
+      title_div.addEventListener("click", function () {
+        localStorage.setItem(
+          "display_receipe",
+          JSON.stringify(title_div.textContent)
+        );
+
+        let receipe_search_results = JSON.parse(
+          localStorage.getItem("receipe_search_results")
+        );
+        let display_receipe = JSON.parse(
+          localStorage.getItem("display_receipe")
+        );
+
+        for (var i = 0; i < receipe_search_results.length; i++) {
+          if (receipe_search_results[i].strMeal === display_receipe) {
+            var arr = [];
+            arr.push(receipe_search_results[i]);
+            appendData(
+              arr,
+              search_btn_results,
+              main,
+              dec_div,
+              dec_img,
+              dec_ingradients
+            );
+            search_results.classList.toggle("show");
+            flag = false;
+            break;
+          }
+        }
+      });
+
+      let title = document.createElement("p");
+      title.textContent = el.strMeal;
+
+      title_div.append(title);
+
+      results.append(title_div);
+    });
+  }
+</script>
