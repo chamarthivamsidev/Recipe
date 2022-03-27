@@ -22,7 +22,7 @@
     <div id="container"></div>
     <div id="main">
       <div id="search_receipe">
-        <input type="text" placeholder="Enter Receipe Name" />
+        <input type="text" placeholder="Enter Receipe Name" id="r_name" />
         <button id="search_btn">Search</button>
       </div>
       <div class="search_results">
@@ -136,6 +136,8 @@
       title_div.setAttribute("id", "title_div");
 
       title_div.addEventListener("click", function () {
+        let r_name = document.getElementById("r_name");
+        r_name.value = `${title_div.textContent}`;
         localStorage.setItem(
           "display_receipe",
           JSON.stringify(title_div.textContent)
@@ -167,10 +169,13 @@
         }
       });
 
+      let img = document.createElement("img");
+      img.src = `${el.strMealThumb}`;
+
       let title = document.createElement("p");
       title.textContent = el.strMeal;
 
-      title_div.append(title);
+      title_div.append(img, title);
 
       results.append(title_div);
     });
