@@ -9,15 +9,18 @@ A web application for users to enquire about recipes of different varieties.
 
 # Some Snapshots 
 
-![image](https://user-images.githubusercontent.com/86275315/155843946-02357575-9f90-467f-8bf8-b70d0e31609a.png)
+![image](https://user-images.githubusercontent.com/86275315/160266148-e67fa5ad-6da8-4db4-8a61-e0eaf23b727b.png)
 
-# Search Results 
-![movie](https://user-images.githubusercontent.com/86275315/155844099-5802d4ce-8651-4d06-be55-8466d4181564.png)
+# Debouncing 
+![image](https://user-images.githubusercontent.com/86275315/160266294-886ea742-acdd-4616-b304-9ac27f432279.png)
 
-# Mobile Responsiveness
-<p align="center">
-  <img src="https://user-images.githubusercontent.com/86275315/155844215-af06c927-25d6-48a7-89bf-8e13ccfb1e2f.png"/>
-</p>
+# Search Results
+![image](https://user-images.githubusercontent.com/86275315/160266334-602d8410-5656-43ba-8d78-68a2ff4b281f.png)
+
+# Individual Cart
+Click on any recipe to see more options like ingradients and youtube video reference link.
+![image](https://user-images.githubusercontent.com/86275315/160266356-c8d6c6d3-f02e-4cd6-8722-10fade48426a.png)
+
 
 
 
